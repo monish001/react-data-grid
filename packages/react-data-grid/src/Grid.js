@@ -144,6 +144,9 @@ class Grid extends React.Component {
   render() {
     const { headerRows } = this.props;
     const EmptyRowsView = this.props.emptyRowsView;
+    const showViewport = this.props.rowsCount >= 1 || (this.props.rowsCount === 0 && !this.props.emptyRowsView);
+    const showEmptyView = !showViewport;
+    debugger
 
     return (
       <div style={this.getStyle()} className="react-grid-Grid">
@@ -162,8 +165,8 @@ class Grid extends React.Component {
           getValidFilterValues={this.props.getValidFilterValues}
           cellMetaData={this.props.cellMetaData}
           />
-          {this.props.rowsCount >= 1 || (this.props.rowsCount === 0 && !this.props.emptyRowsView) ?
             <div
+              style={showViewport ? {} : {'display': 'none'}}
               ref={this.setViewportContainerRef}
               onKeyDown={this.props.onViewportKeydown}
               onKeyUp={this.props.onViewportKeyup}
@@ -210,11 +213,11 @@ class Grid extends React.Component {
                   RowsContainer={this.props.RowsContainer}
                 />
             </div>
-        :
-            <div ref={this.setEmptyViewRef} className="react-grid-Empty">
+            <div 
+                            style={showEmptyView ? {} : {'display': 'none'}}
+                            ref={this.setEmptyViewRef} className="react-grid-Empty">
                 <EmptyRowsView />
             </div>
-        }
       </div>
     );
   }
